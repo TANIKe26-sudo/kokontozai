@@ -35,7 +35,7 @@ php --version
 
 ```sh
 git clone https://github.com/TANIKe26-sudo/kokontozai.git
-cd kokontozai/frontend
+cd frontend
 npm ci
 ```
 (npm ciの代わりにnpm installでも多分可能)
@@ -47,14 +47,14 @@ npm ci
 ターミナル1（React）:
 
 ```sh
-cd kokontozai/frontend
+cd frontend
 npm run dev
 ```
 
 ターミナル2（PHP）:
 
 ```sh
-cd kokontozai/backend
+cd backend
 php -S 127.0.0.1:8000 -t public public/router.php
 ```
 
