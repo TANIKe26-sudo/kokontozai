@@ -1,0 +1,17 @@
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# Backend
+backend/vendor/
+backend/.env
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Local files
+.DS_Store
+Thumbs.db
+*.log
