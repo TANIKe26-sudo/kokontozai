@@ -1,0 +1,168 @@
+.tutorial-backdrop {
+  position: fixed;
+  z-index: 40;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgb(19 46 63 / 56%);
+}
+
+.tutorial-dialog {
+  position: relative;
+  display: flex;
+  width: min(72vw, 1440px);
+  height: min(76vh, 1200px);
+  min-height: 360px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 24px 70px rgb(12 36 54 / 22%);
+  color: #17191d;
+}
+
+.tutorial-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #68717a;
+  cursor: pointer;
+}
+
+.tutorial-close:hover {
+  background: #f1f4f7;
+  color: #303944;
+}
+
+.tutorial-close svg {
+  width: 23px;
+  height: 23px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-width: 2;
+}
+
+.tutorial-page {
+  display: flex;
+  width: 100%;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 36px 88px;
+  text-align: center;
+}
+
+.tutorial-page h1 {
+  margin: 0;
+  font-size: clamp(42px, 5.4vw, 88px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.tutorial-page p {
+  margin: 24px 0 0;
+  color: #69737e;
+  font-size: clamp(16px, 1.5vw, 22px);
+}
+
+.tutorial-navigation {
+  position: absolute;
+  right: 32px;
+  bottom: 24px;
+  left: 32px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+
+.tutorial-nav-button {
+  min-width: 100px;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid #ccd4dc;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #35404a;
+  font: inherit;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.tutorial-nav-button:hover:not(:disabled) {
+  background: #f2f7ff;
+  border-color: #91a2ff;
+}
+
+.tutorial-nav-button:disabled {
+  color: #aab1b8;
+  cursor: default;
+}
+
+.tutorial-previous {
+  justify-self: start;
+}
+
+.tutorial-next {
+  justify-self: end;
+  border-color: #778cff;
+  background: #778cff;
+  color: #ffffff;
+}
+
+.tutorial-next:hover:not(:disabled) {
+  background: #6379ef;
+  color: #ffffff;
+}
+
+.tutorial-page-count {
+  color: #68717a;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+
+.tutorial-close:focus-visible,
+.tutorial-nav-button:focus-visible {
+  outline: 3px solid rgb(112 132 255 / 40%);
+  outline-offset: 2px;
+}
+
+@media (max-width: 700px) {
+  .tutorial-backdrop {
+    padding: 16px;
+  }
+
+  .tutorial-dialog {
+    width: 100%;
+    height: min(72vh, 720px);
+    min-height: 320px;
+    border-radius: 18px;
+  }
+
+  .tutorial-close {
+    top: 12px;
+    right: 12px;
+  }
+
+  .tutorial-navigation {
+    right: 16px;
+    bottom: 16px;
+    left: 16px;
+  }
+
+  .tutorial-nav-button {
+    min-width: 76px;
+  }
+}
