@@ -1,6 +1,13 @@
 import { useRef } from 'react';
 
-export default function ImageButton({ src, label, className = '', rotation = 0 }) {
+export default function ImageButton({
+  src,
+  label,
+  className = '',
+  rotation = 0,
+  onActivate,
+  ariaPressed,
+}) {
   const alphaMap = useRef(null);
 
   function buildAlphaMap(event) {
@@ -55,10 +62,13 @@ export default function ImageButton({ src, label, className = '', rotation = 0 }
     event.currentTarget.style.cursor = isOpaque(event) ? 'pointer' : 'default';
   }
 
-  function ignoreTransparentClick(event) {
-    if (isOpaque(event, true)) return;
-    event.preventDefault();
-    event.stopPropagation();
+  function handleClick(event) {
+    if (!isOpaque(event, true)) {
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
+    onActivate?.(event);
   }
 
   return (
@@ -66,10 +76,11 @@ export default function ImageButton({ src, label, className = '', rotation = 0 }
       className={`island-object ${className}`}
       type="button"
       aria-label={label}
+      aria-pressed={ariaPressed}
       onPointerDown={blockTransparentPointer}
       onPointerMove={updatePointerCursor}
       onPointerLeave={(event) => { event.currentTarget.style.cursor = ''; }}
-      onClick={ignoreTransparentClick}
+      onClick={handleClick}
       style={rotation ? { '--rotation': `${rotation}deg` } : undefined}
     >
       <img src={src} alt="" draggable="false" onLoad={buildAlphaMap} />
