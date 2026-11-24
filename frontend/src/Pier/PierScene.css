@@ -66,30 +66,61 @@
 
 .pier-bottle-white {
   z-index: 5;
-  top: 60%;
-  left: 12%;
-  width: 56%;
 }
 
 .pier-bottle-blue {
   z-index: 2;
-  top: 18%;
-  left: 21%;
-  width: 24%;
 }
 
 .pier-bottle-pink {
   z-index: 5;
-  top: 23%;
-  left: 76%;
-  width: 25%;
 }
 
 .pier-bottle-yellow {
   z-index: 4;
-  top: 48%;
-  left: 82%;
-  width: 44%;
+}
+
+.pier-bottle-bubble {
+  position: absolute;
+  z-index: 11;
+  display: grid;
+  width: clamp(180px, 18vw, 520px);
+  min-height: clamp(100px, 15vh, 308px);
+  place-items: center;
+  padding: clamp(16px, 2.3vh, 46px) clamp(20px, 2vw, 56px);
+  transform: translate(-50%, -100%);
+  border-radius: clamp(22px, 2.4vw, 60px);
+  background: #ffffff;
+  color: #111111;
+  font-size: clamp(18px, 2.3vw, 68px);
+  font-weight: 700;
+  line-height: 1.25;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.pier-bottle-bubble::after {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  transform: translateX(-50%);
+  border-top: clamp(24px, 3vh, 62px) solid #ffffff;
+  border-right: clamp(12px, 1vw, 28px) solid transparent;
+  border-left: clamp(12px, 1vw, 28px) solid transparent;
+  content: '';
+}
+
+.pier-bottle-bubble-below {
+  transform: translate(-50%, 0);
+}
+
+.pier-bottle-bubble-below::after {
+  top: auto;
+  bottom: 100%;
+  border-top: 0;
+  border-bottom: clamp(24px, 3vh, 62px) solid #ffffff;
 }
 
 .pier-back-button {

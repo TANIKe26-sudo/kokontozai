@@ -3,10 +3,10 @@ import ImageButton from '../Home/ImageButton.jsx';
 import './PierScene.css';
 
 const BOTTLES = [
-  { color: 'white', label: '白いメッセージボトル' },
-  { color: 'blue', label: '青いメッセージボトル' },
-  { color: 'pink', label: 'ピンクのメッセージボトル' },
-  { color: 'yellow', label: '黄色いメッセージボトル' },
+  { color: 'white', label: '白いメッセージボトル', top: 60, left: 12, size: 56 },
+  { color: 'blue', label: '青いメッセージボトル', top: 18, left: 21, size: 24 },
+  { color: 'pink', label: 'ピンクのメッセージボトル', top: 23, left: 76, size: 25 },
+  { color: 'yellow', label: '黄色いメッセージボトル', top: 48, left: 82, size: 44 },
 ];
 
 export default function PierScene({ onBack }) {
@@ -14,6 +14,8 @@ export default function PierScene({ onBack }) {
     Object.fromEntries(BOTTLES.map(({ color }) => [color, Math.random() * 360])),
   );
   const [selectedBottle, setSelectedBottle] = useState(null);
+  const selectedBottleLayout = BOTTLES.find(({ color }) => color === selectedBottle);
+  const showBubbleBelowBottle = selectedBottleLayout?.top <= 25;
 
   useEffect(() => {
     function handleKeyDown(event) {
@@ -29,7 +31,7 @@ export default function PierScene({ onBack }) {
       <div className="pier-artboard">
         <img className="pier-art pier-bridge" src="/images/bridge.png" alt="" />
         <img className="pier-art pier-fishing-rod" src="/images/fishingRod.png" alt="" />
-        {BOTTLES.map(({ color, label }) => (
+        {BOTTLES.map(({ color, label, top, left, size }) => (
           <ImageButton
             key={color}
             className={`pier-art pier-bottle pier-bottle-${color}`}
@@ -37,9 +39,24 @@ export default function PierScene({ onBack }) {
             label={label}
             rotation={bottleRotations[color]}
             ariaPressed={selectedBottle === color}
+            style={{ top: `${top}%`, left: `${left}%`, width: `${size}%` }}
             onActivate={() => setSelectedBottle((selected) => (selected === color ? null : color))}
           />
         ))}
+        {selectedBottleLayout && (
+          <div
+            className={`pier-bottle-bubble${showBubbleBelowBottle ? ' pier-bottle-bubble-below' : ''}`}
+            role="status"
+            style={{
+              left: `${selectedBottleLayout.left}%`,
+              top: showBubbleBelowBottle
+                ? `${selectedBottleLayout.top + selectedBottleLayout.size * 0.55}%`
+                : `${Math.max(17, selectedBottleLayout.top - selectedBottleLayout.size * 0.36)}%`,
+            }}
+          >
+            テスト
+          </div>
+        )}
       </div>
       <button className="pier-back-button" type="button" onClick={onBack} aria-label="ホームに戻る">
         <span aria-hidden="true">←</span>

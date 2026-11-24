@@ -7,6 +7,7 @@ export default function ImageButton({
   rotation = 0,
   onActivate,
   ariaPressed,
+  style = {},
 }) {
   const alphaMap = useRef(null);
 
@@ -81,7 +82,7 @@ export default function ImageButton({
       onPointerMove={updatePointerCursor}
       onPointerLeave={(event) => { event.currentTarget.style.cursor = ''; }}
       onClick={handleClick}
-      style={rotation ? { '--rotation': `${rotation}deg` } : undefined}
+      style={{ ...style, ...(rotation ? { '--rotation': `${rotation}deg` } : {}) }}
     >
       <img src={src} alt="" draggable="false" onLoad={buildAlphaMap} />
     </button>
