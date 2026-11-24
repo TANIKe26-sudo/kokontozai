@@ -4,9 +4,11 @@ import GenrePicker from './GenrePicker.jsx';
 import IslandScene from './IslandScene.jsx';
 import PierScene from '../Pier/PierScene.jsx';
 import TutorialModal from './TutorialModal.jsx';
+import DecorationInventoryModal from './DecorationInventoryModal.jsx';
 
 export default function Home() {
   const [tutorialOpen, setTutorialOpen] = useState(false);
+  const [decorationOpen, setDecorationOpen] = useState(false);
   const [pierOpen, setPierOpen] = useState(false);
 
   if (pierOpen) {
@@ -15,7 +17,10 @@ export default function Home() {
 
   return (
     <main className="home-screen" aria-label="Island home screen">
-      <IslandScene onBridgeClick={() => setPierOpen(true)} />
+      <IslandScene
+        onBridgeClick={() => setPierOpen(true)}
+        onDecoBoxClick={() => setDecorationOpen(true)}
+      />
       <button
         className="help-button"
         type="button"
@@ -26,6 +31,9 @@ export default function Home() {
       </button>
       <GenrePicker />
       {tutorialOpen && <TutorialModal onClose={() => setTutorialOpen(false)} />}
+      {decorationOpen && (
+        <DecorationInventoryModal onClose={() => setDecorationOpen(false)} />
+      )}
     </main>
   );
 }
