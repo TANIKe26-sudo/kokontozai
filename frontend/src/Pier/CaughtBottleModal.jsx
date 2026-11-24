@@ -92,7 +92,7 @@ export default function CaughtBottleModal({ color, onClose }) {
       onClick={handleOverlayClick}
     >
       <button
-        className="pier-back-button caught-bottle-back"
+        className="scene-back-button caught-bottle-back"
         type="button"
         onClick={onClose}
         aria-label="桟橋に戻る"

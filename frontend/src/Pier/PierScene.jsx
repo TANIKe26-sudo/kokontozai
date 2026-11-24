@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import ImageButton from '../Home/ImageButton.jsx';
 import CaughtBottleModal from './CaughtBottleModal.jsx';
+import '../styles/sceneButtons.css';
 import './PierScene.css';
 
 const BOTTLES = [
@@ -72,13 +73,13 @@ export default function PierScene({ onBack }) {
         )}
       </div>
       {!caughtBottle && (
-        <button className="pier-back-button" type="button" onClick={onBack} aria-label="ホームに戻る">
+        <button className="scene-back-button" type="button" onClick={onBack} aria-label="ホームに戻る">
           <span aria-hidden="true">←</span>
         </button>
       )}
       {!caughtBottle && (
         <button
-          className="pier-fish-button"
+          className="scene-action-button"
           type="button"
           onClick={catchBottle}
         >
