@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import ImageButton from '../Home/ImageButton.jsx';
+import CaughtBottleModal from './CaughtBottleModal.jsx';
 import './PierScene.css';
 
 const BOTTLES = [
@@ -14,17 +15,29 @@ export default function PierScene({ onBack }) {
     Object.fromEntries(BOTTLES.map(({ color }) => [color, Math.random() * 360])),
   );
   const [selectedBottle, setSelectedBottle] = useState(null);
+  const [caughtBottle, setCaughtBottle] = useState(null);
   const selectedBottleLayout = BOTTLES.find(({ color }) => color === selectedBottle);
   const showBubbleBelowBottle = selectedBottleLayout?.top <= 25;
 
   useEffect(() => {
     function handleKeyDown(event) {
-      if (event.key === 'Escape') onBack();
+      if (event.key !== 'Escape') return;
+      if (caughtBottle) {
+        setCaughtBottle(null);
+      } else {
+        onBack();
+      }
     }
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onBack]);
+  }, [caughtBottle, onBack]);
+
+  function catchBottle() {
+    const color = selectedBottle
+      || BOTTLES[Math.floor(Math.random() * BOTTLES.length)].color;
+    setCaughtBottle(color);
+  }
 
   return (
     <main className="pier-scene" aria-label="桟橋">
@@ -58,12 +71,23 @@ export default function PierScene({ onBack }) {
           </div>
         )}
       </div>
-      <button className="pier-back-button" type="button" onClick={onBack} aria-label="ホームに戻る">
-        <span aria-hidden="true">←</span>
-      </button>
-      <button className="pier-fish-button" type="button">
-        {selectedBottle ? 'このボトルを釣る' : 'ランダムで釣る'}
-      </button>
+      {!caughtBottle && (
+        <button className="pier-back-button" type="button" onClick={onBack} aria-label="ホームに戻る">
+          <span aria-hidden="true">←</span>
+        </button>
+      )}
+      {!caughtBottle && (
+        <button
+          className="pier-fish-button"
+          type="button"
+          onClick={catchBottle}
+        >
+          {selectedBottle ? 'このボトルを釣る' : 'ランダムで釣る'}
+        </button>
+      )}
+      {caughtBottle && (
+        <CaughtBottleModal color={caughtBottle} onClose={() => setCaughtBottle(null)} />
+      )}
     </main>
   );
 }
