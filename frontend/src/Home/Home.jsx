@@ -3,6 +3,7 @@ import './Home.css';
 import GenrePicker from './GenrePicker.jsx';
 import IslandScene from './IslandScene.jsx';
 import PierScene from '../Pier/PierScene.jsx';
+import WorkspaceScene from '../Workspace/WorkspaceScene.jsx';
 import TutorialModal from './TutorialModal.jsx';
 import DecorationInventoryModal from './DecorationInventoryModal.jsx';
 
@@ -10,9 +11,14 @@ export default function Home() {
   const [tutorialOpen, setTutorialOpen] = useState(false);
   const [decorationOpen, setDecorationOpen] = useState(false);
   const [pierOpen, setPierOpen] = useState(false);
+  const [workspaceOpen, setWorkspaceOpen] = useState(false);
 
   if (pierOpen) {
     return <PierScene onBack={() => setPierOpen(false)} />;
+  }
+
+  if (workspaceOpen) {
+    return <WorkspaceScene onBack={() => setWorkspaceOpen(false)} />;
   }
 
   return (
@@ -20,6 +26,7 @@ export default function Home() {
       <IslandScene
         onBridgeClick={() => setPierOpen(true)}
         onDecoBoxClick={() => setDecorationOpen(true)}
+        onWorkspaceClick={() => setWorkspaceOpen(true)}
       />
       <button
         className="help-button"

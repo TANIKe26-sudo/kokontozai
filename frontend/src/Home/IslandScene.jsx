@@ -2,7 +2,7 @@ import { useState } from 'react';
 import ImageButton from './ImageButton.jsx';
 import './IslandScene.css';
 
-export default function IslandScene({ onBridgeClick, onDecoBoxClick }) {
+export default function IslandScene({ onBridgeClick, onDecoBoxClick, onWorkspaceClick }) {
   const [bottleRotations] = useState(() =>
     Array.from({ length: 4 }, () => Math.random() * 360),
   );
@@ -28,6 +28,7 @@ export default function IslandScene({ onBridgeClick, onDecoBoxClick }) {
           className="island-workspace"
           src="/images/workspace.png"
           label="Workspace"
+          onActivate={onWorkspaceClick}
         />
         <ImageButton
           className="island-bottle bottle-pink"

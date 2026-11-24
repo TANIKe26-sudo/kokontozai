@@ -123,62 +123,6 @@
   border-bottom: clamp(24px, 3vh, 62px) solid #ffffff;
 }
 
-.pier-back-button {
-  position: absolute;
-  z-index: 10;
-  top: 20px;
-  left: 20px;
-  display: grid;
-  width: clamp(40px, 3.2vw, 56px);
-  aspect-ratio: 1;
-  place-items: center;
-  padding: 0 2px 4px 0;
-  border: 3px solid #8798ff;
-  border-radius: 50%;
-  background: rgb(255 255 255 / 92%);
-  color: #555a61;
-  font: inherit;
-  font-size: clamp(24px, 2vw, 32px);
-  line-height: 1;
-  cursor: pointer;
-  transition: transform 140ms ease, box-shadow 140ms ease;
-}
-
-.pier-back-button:hover {
-  transform: scale(1.04);
-  box-shadow: 0 5px 16px rgb(39 61 101 / 16%);
-}
-
-.pier-back-button:focus-visible {
-  outline: 3px solid rgb(112 132 255 / 40%);
-  outline-offset: 4px;
-}
-
-.pier-fish-button {
-  position: absolute;
-  z-index: 12;
-  bottom: clamp(20px, 5.2vh, 108px);
-  left: 50%;
-  min-height: clamp(58px, 8vh, 164px);
-  padding: 0 clamp(18px, 1.7vw, 48px);
-  transform: translateX(-50%);
-  border: clamp(4px, 0.25vw, 7px) solid #5ba4ec;
-  border-radius: 999px;
-  background: #ffffff;
-  color: #555555;
-  font: inherit;
-  font-size: clamp(18px, 2.2vw, 58px);
-  font-weight: 700;
-  line-height: 1.1;
-  white-space: nowrap;
-  cursor: pointer;
-}
-
-.pier-fish-button:focus-visible {
-  outline: 3px solid rgb(112 132 255 / 40%);
-  outline-offset: 4px;
-}
-
 @media (max-aspect-ratio: 4 / 3) {
   .pier-artboard {
     width: 100vw;
