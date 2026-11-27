@@ -11,8 +11,8 @@ const BOTTLE_IMAGE_BY_GENRE = {
   その他: 'bottleWhiteMsg.png',
 };
 const RIBBONS = [
-  { id: 'red', label: '赤いリボン', image: 'ribbonRed.png' },
-  { id: 'blue', label: '青いリボン', image: 'ribbonBlue.png' },
+  { id: 'red', label: '赤いリボン', image: 'ribbonRed.png', bottleImage: 'ribbonRedBo.png' },
+  { id: 'blue', label: '青いリボン', image: 'ribbonBlue.png', bottleImage: 'ribbonBlueBo.png' },
 ];
 
 export default function WorkspaceScene({ onBack }) {
@@ -86,7 +86,7 @@ export default function WorkspaceScene({ onBack }) {
               {selectedRibbon && (
                 <img
                   className="workspace-bottle-ribbon"
-                  src={`/images/${selectedRibbon.image}`}
+                  src={`/images/${selectedRibbon.bottleImage}`}
                   alt=""
                 />
               )}
