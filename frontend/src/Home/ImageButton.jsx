@@ -1,5 +1,7 @@
 import { useRef } from 'react';
 
+const ALPHA_HIT_THRESHOLD = 64;
+
 export default function ImageButton({
   src,
   label,
@@ -50,7 +52,7 @@ export default function ImageButton({
     const y = Math.floor((localY / button.offsetHeight) * map.height);
 
     if (x < 0 || y < 0 || x >= map.width || y >= map.height) return false;
-    return map.alpha[y * map.width + x] > 0;
+    return map.alpha[y * map.width + x] >= ALPHA_HIT_THRESHOLD;
   }
 
   function blockTransparentPointer(event) {

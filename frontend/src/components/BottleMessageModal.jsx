@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import './CaughtBottleModal.css';
+import './BottleMessageModal.css';
 
 const REACTIONS = [
   { image: 'heart.png', label: '共感' },
@@ -24,6 +24,9 @@ const BOTTLE_NAMES = {
   yellow: '黄色い',
 };
 
+const ALPHA_HIT_THRESHOLD = 64;
+const BOTTLE_ALPHA_HIT_THRESHOLD = 192;
+
 function createAlphaMap(image) {
   const width = image.naturalWidth;
   const height = image.naturalHeight;
@@ -43,42 +46,68 @@ function createAlphaMap(image) {
   return { alpha, width, height };
 }
 
-function isOpaqueAt(image, map, clientX, clientY) {
-  if (!image || !map) return true;
+function isOpaqueAt(
+  image,
+  map,
+  clientX,
+  clientY,
+  threshold = ALPHA_HIT_THRESHOLD,
+  inset = 0,
+) {
+  if (!image || !map) return false;
 
   const bounds = image.getBoundingClientRect();
+  if (bounds.width === 0 || bounds.height === 0) return false;
   const x = Math.floor(((clientX - bounds.left) / bounds.width) * map.width);
   const y = Math.floor(((clientY - bounds.top) / bounds.height) * map.height);
   if (x < 0 || y < 0 || x >= map.width || y >= map.height) return false;
-  return map.alpha[y * map.width + x] > 8;
+  if (
+    x < map.width * inset
+    || x >= map.width * (1 - inset)
+    || y < map.height * inset
+    || y >= map.height * (1 - inset)
+  ) return false;
+  return map.alpha[y * map.width + x] >= threshold;
 }
 
-export default function CaughtBottleModal({ color, onClose }) {
+export default function BottleMessageModal({ color, onClose }) {
   const paperAlphaMap = useRef(null);
   const bottleAlphaMap = useRef(null);
   const [selectedReaction, setSelectedReaction] = useState(null);
   const selectedReactionLabel = REACTIONS.find(({ image }) => image === selectedReaction)?.label;
 
-  function saveAlphaMap(event, mapRef) {
+  function saveBottleAlphaMap(event) {
     try {
-      mapRef.current = createAlphaMap(event.currentTarget);
+      bottleAlphaMap.current = createAlphaMap(event.currentTarget);
     } catch {
-      mapRef.current = null;
+      bottleAlphaMap.current = null;
+    }
+  }
+
+  function savePaperAlphaMap(event) {
+    try {
+      paperAlphaMap.current = createAlphaMap(event.currentTarget);
+    } catch {
+      paperAlphaMap.current = null;
     }
   }
 
   function handleOverlayClick(event) {
     const target = event.target;
     if (!(target instanceof Element)) return;
-    if (target.closest(
-      '.reaction-rail, .release-bottle-button, .caught-bottle-back',
-    )) return;
+    if (target.closest('.reaction-rail, .release-bottle-button, .caught-bottle-back')) return;
+
+    const paperImage = event.currentTarget.querySelector('.letter-paper-image');
+    if (isOpaqueAt(paperImage, paperAlphaMap.current, event.clientX, event.clientY, ALPHA_HIT_THRESHOLD, 0.035)) return;
 
     const bottle = target.closest('.caught-empty-bottle');
-    if (bottle && isOpaqueAt(bottle, bottleAlphaMap.current, event.clientX, event.clientY)) return;
-
-    const paper = event.currentTarget.querySelector('.letter-paper-image');
-    if (isOpaqueAt(paper, paperAlphaMap.current, event.clientX, event.clientY)) return;
+    if (bottle && isOpaqueAt(
+      bottle,
+      bottleAlphaMap.current,
+      event.clientX,
+      event.clientY,
+      BOTTLE_ALPHA_HIT_THRESHOLD,
+    )) return;
 
     onClose();
   }
@@ -122,7 +151,7 @@ export default function CaughtBottleModal({ color, onClose }) {
           className="letter-paper-image"
           src="/images/paper.png"
           alt=""
-          onLoad={(event) => saveAlphaMap(event, paperAlphaMap)}
+          onLoad={savePaperAlphaMap}
         />
         {selectedReaction && (
           <img
@@ -133,15 +162,17 @@ export default function CaughtBottleModal({ color, onClose }) {
           />
         )}
         <div className="letter-copy">
-          <p className="letter-message">友達と喧嘩して、喧嘩になった。</p>
+          <p className="letter-message">
+            最初から、pngで画像を使うんじゃなく、画像をsvgにしとくべきだったテストねぇ。
+          </p>
         </div>
       </article>
 
       <img
         className={`caught-empty-bottle caught-empty-bottle-${color}`}
         src={`/images/bottle${color[0].toUpperCase()}${color.slice(1)}.png`}
+        onLoad={saveBottleAlphaMap}
         alt={`${BOTTLE_NAMES[color]}開いた空のボトル`}
-        onLoad={(event) => saveAlphaMap(event, bottleAlphaMap)}
       />
 
       <button className="release-bottle-button" type="button" onClick={onClose}>
