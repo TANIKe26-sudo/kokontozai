@@ -1,21 +1,9 @@
 import { useRef, useState } from 'react';
+import ReactionIcon from './svg/reactions/ReactionIcon.jsx';
+import BottleSvg from './svg/bottles/BottleSvg.jsx';
+import { isPointOnBottle } from './svg/bottles/bottleHitTest.js';
+import { MESSAGE_REACTIONS } from '../data/reactions.js';
 import './BottleMessageModal.css';
-
-const REACTIONS = [
-  { image: 'heart.png', label: '共感' },
-  { image: 'eyes.png', label: '見守る' },
-  { image: 'hug.png', label: 'ハグ' },
-  { image: 'ExplodingHead.png', label: 'びっくり' },
-  { image: 'handShake.png', label: '握手' },
-  { image: 'heartHands.png', label: 'ハートを送る' },
-  { image: 'cry.png', label: '泣く' },
-  { image: 'scream.png', label: '叫ぶ' },
-  { image: 'sob.png', label: '号泣' },
-  { image: 'pensive.png', label: '考える' },
-  { image: 'pray.png', label: '祈る' },
-  { image: 'MeltingFace.png', label: 'とろける' },
-  { image: 'PienFace.png', label: 'ぴえん' },
-];
 
 const BOTTLE_NAMES = {
   white: '白い',
@@ -25,7 +13,6 @@ const BOTTLE_NAMES = {
 };
 
 const ALPHA_HIT_THRESHOLD = 64;
-const BOTTLE_ALPHA_HIT_THRESHOLD = 192;
 
 function createAlphaMap(image) {
   const width = image.naturalWidth;
@@ -70,19 +57,11 @@ function isOpaqueAt(
   return map.alpha[y * map.width + x] >= threshold;
 }
 
-export default function BottleMessageModal({ color, onClose }) {
+export default function BottleMessageModal({ color, ribbonColor = null, onClose }) {
   const paperAlphaMap = useRef(null);
-  const bottleAlphaMap = useRef(null);
-  const [selectedReaction, setSelectedReaction] = useState(null);
-  const selectedReactionLabel = REACTIONS.find(({ image }) => image === selectedReaction)?.label;
-
-  function saveBottleAlphaMap(event) {
-    try {
-      bottleAlphaMap.current = createAlphaMap(event.currentTarget);
-    } catch {
-      bottleAlphaMap.current = null;
-    }
-  }
+  const bottleRef = useRef(null);
+  const [selectedReactionId, setSelectedReactionId] = useState(null);
+  const selectedReaction = MESSAGE_REACTIONS.find(({ id }) => id === selectedReactionId);
 
   function savePaperAlphaMap(event) {
     try {
@@ -100,14 +79,7 @@ export default function BottleMessageModal({ color, onClose }) {
     const paperImage = event.currentTarget.querySelector('.letter-paper-image');
     if (isOpaqueAt(paperImage, paperAlphaMap.current, event.clientX, event.clientY, ALPHA_HIT_THRESHOLD, 0.035)) return;
 
-    const bottle = target.closest('.caught-empty-bottle');
-    if (bottle && isOpaqueAt(
-      bottle,
-      bottleAlphaMap.current,
-      event.clientX,
-      event.clientY,
-      BOTTLE_ALPHA_HIT_THRESHOLD,
-    )) return;
+    if (isPointOnBottle(bottleRef.current, event.clientX, event.clientY, true)) return;
 
     onClose();
   }
@@ -131,16 +103,16 @@ export default function BottleMessageModal({ color, onClose }) {
 
       <aside className="reaction-rail" aria-label="リアクションを選ぶ">
         <div className="reaction-list">
-          {REACTIONS.map(({ image, label }) => (
+          {MESSAGE_REACTIONS.map(({ id, label }) => (
             <button
-              key={image}
-              className={`reaction-button${selectedReaction === image ? ' is-selected' : ''}`}
+              key={id}
+              className={`reaction-button${selectedReactionId === id ? ' is-selected' : ''}`}
               type="button"
               aria-label={label}
-              aria-pressed={selectedReaction === image}
-              onClick={() => setSelectedReaction((selected) => (selected === image ? null : image))}
+              aria-pressed={selectedReactionId === id}
+              onClick={() => setSelectedReactionId((selected) => (selected === id ? null : id))}
             >
-              <img src={`/images/${image}`} alt="" draggable="false" />
+              <ReactionIcon reactionId={id} />
             </button>
           ))}
         </div>
@@ -154,11 +126,10 @@ export default function BottleMessageModal({ color, onClose }) {
           onLoad={savePaperAlphaMap}
         />
         {selectedReaction && (
-          <img
+          <ReactionIcon
             className="letter-reaction-sticker"
-            src={`/images/${selectedReaction}`}
-            alt={selectedReactionLabel ?? '選択したリアクション'}
-            draggable="false"
+            reactionId={selectedReaction.id}
+            title={selectedReaction.label}
           />
         )}
         <div className="letter-copy">
@@ -168,11 +139,12 @@ export default function BottleMessageModal({ color, onClose }) {
         </div>
       </article>
 
-      <img
+      <BottleSvg
+        ref={bottleRef}
         className={`caught-empty-bottle caught-empty-bottle-${color}`}
-        src={`/images/bottle${color[0].toUpperCase()}${color.slice(1)}.png`}
-        onLoad={saveBottleAlphaMap}
-        alt={`${BOTTLE_NAMES[color]}開いた空のボトル`}
+        color={color}
+        ribbonColor={ribbonColor}
+        title={`${BOTTLE_NAMES[color]}開いた空のボトル`}
       />
 
       <button className="release-bottle-button" type="button" onClick={onClose}>

@@ -129,11 +129,15 @@
   border-radius: 13px;
 }
 
-.decoration-art img {
+.decoration-art img,
+.decoration-art svg {
   display: block;
   width: 82%;
   height: 82%;
   object-fit: contain;
+}
+
+.decoration-art img {
   filter: drop-shadow(0 3px 2px rgb(68 57 44 / 10%));
 }
 

@@ -1,18 +1,21 @@
 import { useEffect, useState } from 'react';
+import WorkspaceTable from '../components/backgrounds/WorkspaceTable.jsx';
+import BottleSvg from '../components/svg/bottles/BottleSvg.jsx';
+import RibbonSvg from '../components/svg/ribbons/RibbonSvg.jsx';
 import '../styles/sceneButtons.css';
 import '../Home/DecorationInventoryModal.css';
 import './WorkspaceScene.css';
 
 const GENRES = ['恋愛', '人間関係', '仕事／学校', 'その他'];
-const BOTTLE_IMAGE_BY_GENRE = {
-  恋愛: 'bottlePinkMsg.png',
-  人間関係: 'bottleYellowMsg.png',
-  '仕事／学校': 'bottleBlueMsg.png',
-  その他: 'bottleWhiteMsg.png',
+const BOTTLE_COLOR_BY_GENRE = {
+  恋愛: 'pink',
+  人間関係: 'yellow',
+  '仕事／学校': 'blue',
+  その他: 'white',
 };
 const RIBBONS = [
-  { id: 'red', label: '赤いリボン', image: 'ribbonRed.png', bottleImage: 'ribbonRedBo.png' },
-  { id: 'blue', label: '青いリボン', image: 'ribbonBlue.png', bottleImage: 'ribbonBlueBo.png' },
+  { id: 'red', label: '赤いリボン' },
+  { id: 'blue', label: '青いリボン' },
 ];
 
 export default function WorkspaceScene({ onBack }) {
@@ -52,7 +55,7 @@ export default function WorkspaceScene({ onBack }) {
       className="workspace-scene"
       aria-label={step === 'write' ? 'ボトルメッセージ作成' : 'ジャンルとボトルのデコ選択'}
     >
-      <img className="workspace-background" src="/images/workSpaceTable.png" alt="" />
+      <WorkspaceTable />
       <div className="workspace-artboard">
         {step === 'write' ? (
           <>
@@ -78,18 +81,12 @@ export default function WorkspaceScene({ onBack }) {
               role="img"
               aria-label={selectedRibbon ? `メッセージ入りボトル、${selectedRibbon.label}付き` : 'メッセージ入りボトル'}
             >
-              <img
+              <BottleSvg
                 className="workspace-bottle-image"
-                src={`/images/${BOTTLE_IMAGE_BY_GENRE[genre] ?? 'bottleWhiteMsg.png'}`}
-                alt=""
+                color={BOTTLE_COLOR_BY_GENRE[genre] ?? 'white'}
+                ribbonColor={selectedRibbon?.id ?? null}
+                withMessage
               />
-              {selectedRibbon && (
-                <img
-                  className="workspace-bottle-ribbon"
-                  src={`/images/${selectedRibbon.bottleImage}`}
-                  alt=""
-                />
-              )}
             </div>
 
             <section className="workspace-genre-section" aria-labelledby="workspace-genre-title">
@@ -134,7 +131,7 @@ export default function WorkspaceScene({ onBack }) {
                     }
                   >
                     <span className="decoration-art">
-                      <img src={`/images/${ribbon.image}`} alt="" />
+                      <RibbonSvg color={ribbon.id} />
                     </span>
                   </button>
                 ))}

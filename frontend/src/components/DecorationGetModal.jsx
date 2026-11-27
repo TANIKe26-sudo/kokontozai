@@ -1,3 +1,4 @@
+import ReactionIcon from './svg/reactions/ReactionIcon.jsx';
 import './DecorationGetModal.css';
 
 export default function DecorationGetModal({ decorationName = 'ハート', onClose }) {
@@ -10,7 +11,7 @@ export default function DecorationGetModal({ decorationName = 'ハート', onClo
       onClick={onClose}
     >
       <span className="decoration-get-heart-glow" aria-hidden="true">
-        <img className="decoration-get-heart" src="/images/heart.png" alt="" />
+        <ReactionIcon className="decoration-get-heart" reactionId="heart" />
       </span>
       <p className="decoration-get-message">
         <span>{decorationName}を手に入れた！</span>

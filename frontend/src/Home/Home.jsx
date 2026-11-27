@@ -14,20 +14,20 @@ export default function Home() {
   const [decorationOpen, setDecorationOpen] = useState(false);
   const [pierOpen, setPierOpen] = useState(false);
   const [workspaceOpen, setWorkspaceOpen] = useState(false);
-  const [openBottleColor, setOpenBottleColor] = useState(null);
-  const [pendingBottleColor, setPendingBottleColor] = useState(null);
+  const [openBottle, setOpenBottle] = useState(null);
+  const [pendingBottle, setPendingBottle] = useState(null);
   const [decorationGetOpen, setDecorationGetOpen] = useState(false);
 
-  function handleIslandBottleClick(color) {
-    setPendingBottleColor(color);
+  function handleIslandBottleClick(bottle) {
+    setPendingBottle(bottle);
     setDecorationGetOpen(true);
   }
 
   function handleDecorationGetClose() {
     setDecorationGetOpen(false);
-    if (pendingBottleColor) {
-      setOpenBottleColor(pendingBottleColor);
-      setPendingBottleColor(null);
+    if (pendingBottle) {
+      setOpenBottle(pendingBottle);
+      setPendingBottle(null);
     }
   }
 
@@ -60,10 +60,11 @@ export default function Home() {
       {decorationOpen && (
         <DecorationInventoryModal onClose={() => setDecorationOpen(false)} />
       )}
-      {openBottleColor && (
+      {openBottle && (
         <BottleMessageModal
-          color={openBottleColor}
-          onClose={() => setOpenBottleColor(null)}
+          color={openBottle.color}
+          ribbonColor={openBottle.ribbonColor}
+          onClose={() => setOpenBottle(null)}
         />
       )}
       {decorationGetOpen && (

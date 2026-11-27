@@ -46,7 +46,8 @@
   outline-offset: 3px;
 }
 
-.island-object img {
+.island-object img,
+.island-object svg {
   display: block;
   width: 100%;
   height: 100%;

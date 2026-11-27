@@ -1,10 +1,19 @@
 import { useState } from 'react';
 import ImageButton from './ImageButton.jsx';
+import BottleButton from '../components/BottleButton.jsx';
+import { SAMPLE_BOTTLES } from '../data/bottles.js';
 import './IslandScene.css';
+
+const BOTTLES = [
+  { ...SAMPLE_BOTTLES.pink, label: 'Pink message bottle' },
+  { ...SAMPLE_BOTTLES.white, label: 'White message bottle' },
+  { ...SAMPLE_BOTTLES.yellow, label: 'Yellow message bottle' },
+  { ...SAMPLE_BOTTLES.blue, label: 'Blue message bottle' },
+];
 
 export default function IslandScene({ onBridgeClick, onDecoBoxClick, onWorkspaceClick, onBottleClick }) {
   const [bottleRotations] = useState(() =>
-    Array.from({ length: 4 }, () => Math.random() * 360),
+    Array.from({ length: BOTTLES.length }, () => Math.random() * 360),
   );
 
   return (
@@ -30,34 +39,17 @@ export default function IslandScene({ onBridgeClick, onDecoBoxClick, onWorkspace
           label="Workspace"
           onActivate={onWorkspaceClick}
         />
-        <ImageButton
-          className="island-bottle bottle-pink"
-          src="/images/bottlePinkMsg.png"
-          label="Pink message bottle"
-          rotation={bottleRotations[0]}
-          onActivate={() => onBottleClick('pink')}
-        />
-        <ImageButton
-          className="island-bottle bottle-white"
-          src="/images/bottleWhiteMsg.png"
-          label="White message bottle"
-          rotation={bottleRotations[1]}
-          onActivate={() => onBottleClick('white')}
-        />
-        <ImageButton
-          className="island-bottle bottle-yellow"
-          src="/images/bottleYellowMsg.png"
-          label="Yellow message bottle"
-          rotation={bottleRotations[2]}
-          onActivate={() => onBottleClick('yellow')}
-        />
-        <ImageButton
-          className="island-bottle bottle-blue"
-          src="/images/bottleBlueMsg.png"
-          label="Blue message bottle"
-          rotation={bottleRotations[3]}
-          onActivate={() => onBottleClick('blue')}
-        />
+        {BOTTLES.map((bottle, index) => (
+          <BottleButton
+            key={bottle.color}
+            className={`island-bottle bottle-${bottle.color}`}
+            color={bottle.color}
+            ribbonColor={bottle.ribbonColor}
+            label={bottle.label}
+            rotation={bottleRotations[index]}
+            onActivate={() => onBottleClick(bottle)}
+          />
+        ))}
         <svg className="selection-marker marker-deco-box" viewBox="0 0 64 64" aria-hidden="true">
           <path d="M5 5 H59 L32 59 Z" />
         </svg>

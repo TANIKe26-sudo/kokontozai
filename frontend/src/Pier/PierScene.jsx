@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
-import ImageButton from '../Home/ImageButton.jsx';
+import BottleButton from '../components/BottleButton.jsx';
 import BottleMessageModal from '../components/BottleMessageModal.jsx';
 import DecorationGetModal from '../components/DecorationGetModal.jsx';
+import { SAMPLE_BOTTLES } from '../data/bottles.js';
 import '../styles/sceneButtons.css';
 import './PierScene.css';
 
 const BOTTLES = [
-  { color: 'white', label: '白いメッセージボトル', top: 60, left: 12, size: 56 },
-  { color: 'blue', label: '青いメッセージボトル', top: 18, left: 21, size: 24 },
-  { color: 'pink', label: 'ピンクのメッセージボトル', top: 23, left: 76, size: 25 },
-  { color: 'yellow', label: '黄色いメッセージボトル', top: 48, left: 82, size: 44 },
+  { ...SAMPLE_BOTTLES.white, label: '白いメッセージボトル', top: 60, left: 12, size: 56 },
+  { ...SAMPLE_BOTTLES.blue, label: '青いメッセージボトル', top: 18, left: 21, size: 24 },
+  { ...SAMPLE_BOTTLES.pink, label: 'ピンクのメッセージボトル', top: 23, left: 76, size: 25 },
+  { ...SAMPLE_BOTTLES.yellow, label: '黄色いメッセージボトル', top: 48, left: 82, size: 44 },
 ];
 
 export default function PierScene({ onBack }) {
@@ -44,9 +45,9 @@ export default function PierScene({ onBack }) {
   }, [caughtBottle, decorationGetOpen, onBack, pendingBottle]);
 
   function catchBottle() {
-    const color = selectedBottle
-      || BOTTLES[Math.floor(Math.random() * BOTTLES.length)].color;
-    setPendingBottle(color);
+    const bottle = BOTTLES.find(({ color }) => color === selectedBottle)
+      || BOTTLES[Math.floor(Math.random() * BOTTLES.length)];
+    setPendingBottle(bottle);
     setDecorationGetOpen(true);
   }
 
@@ -55,11 +56,12 @@ export default function PierScene({ onBack }) {
       <div className="pier-artboard">
         <img className="pier-art pier-bridge" src="/images/bridge.png" alt="" />
         <img className="pier-art pier-fishing-rod" src="/images/fishingRod.png" alt="" />
-        {BOTTLES.map(({ color, label, top, left, size }) => (
-          <ImageButton
+        {BOTTLES.map(({ color, ribbonColor, label, top, left, size }) => (
+          <BottleButton
             key={color}
             className={`pier-art pier-bottle pier-bottle-${color}`}
-            src={`/images/bottle${color[0].toUpperCase()}${color.slice(1)}Msg.png`}
+            color={color}
+            ribbonColor={ribbonColor}
             label={label}
             rotation={bottleRotations[color]}
             ariaPressed={selectedBottle === color}
@@ -98,7 +100,8 @@ export default function PierScene({ onBack }) {
       )}
       {caughtBottle && (
         <BottleMessageModal
-          color={caughtBottle}
+          color={caughtBottle.color}
+          ribbonColor={caughtBottle.ribbonColor}
           onClose={() => setCaughtBottle(null)}
         />
       )}
