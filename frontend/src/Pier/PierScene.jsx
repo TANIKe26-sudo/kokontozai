@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import ImageButton from '../Home/ImageButton.jsx';
 import BottleMessageModal from '../components/BottleMessageModal.jsx';
+import DecorationGetModal from '../components/DecorationGetModal.jsx';
 import '../styles/sceneButtons.css';
 import './PierScene.css';
 
@@ -17,12 +18,20 @@ export default function PierScene({ onBack }) {
   );
   const [selectedBottle, setSelectedBottle] = useState(null);
   const [caughtBottle, setCaughtBottle] = useState(null);
+  const [pendingBottle, setPendingBottle] = useState(null);
+  const [decorationGetOpen, setDecorationGetOpen] = useState(false);
   const selectedBottleLayout = BOTTLES.find(({ color }) => color === selectedBottle);
   const showBubbleBelowBottle = selectedBottleLayout?.top <= 25;
 
   useEffect(() => {
     function handleKeyDown(event) {
       if (event.key !== 'Escape') return;
+      if (decorationGetOpen) {
+        setDecorationGetOpen(false);
+        setCaughtBottle(pendingBottle);
+        setPendingBottle(null);
+        return;
+      }
       if (caughtBottle) {
         setCaughtBottle(null);
       } else {
@@ -32,12 +41,13 @@ export default function PierScene({ onBack }) {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [caughtBottle, onBack]);
+  }, [caughtBottle, decorationGetOpen, onBack, pendingBottle]);
 
   function catchBottle() {
     const color = selectedBottle
       || BOTTLES[Math.floor(Math.random() * BOTTLES.length)].color;
-    setCaughtBottle(color);
+    setPendingBottle(color);
+    setDecorationGetOpen(true);
   }
 
   return (
@@ -77,7 +87,7 @@ export default function PierScene({ onBack }) {
           <span aria-hidden="true">←</span>
         </button>
       )}
-      {!caughtBottle && (
+      {!caughtBottle && !decorationGetOpen && (
         <button
           className="scene-action-button"
           type="button"
@@ -87,7 +97,20 @@ export default function PierScene({ onBack }) {
         </button>
       )}
       {caughtBottle && (
-        <BottleMessageModal color={caughtBottle} onClose={() => setCaughtBottle(null)} />
+        <BottleMessageModal
+          color={caughtBottle}
+          onClose={() => setCaughtBottle(null)}
+        />
+      )}
+      {decorationGetOpen && (
+        <DecorationGetModal
+          decorationName="ハート"
+          onClose={() => {
+            setDecorationGetOpen(false);
+            setCaughtBottle(pendingBottle);
+            setPendingBottle(null);
+          }}
+        />
       )}
     </main>
   );
