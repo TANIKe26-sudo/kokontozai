@@ -103,24 +103,13 @@
 .workspace-bottle-image,
 .workspace-bottle-ribbon {
   position: absolute;
+  inset: 0;
   display: block;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   pointer-events: none;
   user-select: none;
-}
-
-.workspace-bottle-image {
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.workspace-bottle-ribbon {
-  top: 4%;
-  left: 20%;
-  width: 60%;
-  height: auto;
-  aspect-ratio: 4 / 3;
 }
 
 .workspace-genre-section,
