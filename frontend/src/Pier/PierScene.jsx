@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import ImageButton from '../Home/ImageButton.jsx';
-import CaughtBottleModal from './CaughtBottleModal.jsx';
+import BottleMessageModal from '../components/BottleMessageModal.jsx';
 import '../styles/sceneButtons.css';
 import './PierScene.css';
 
@@ -87,7 +87,7 @@ export default function PierScene({ onBack }) {
         </button>
       )}
       {caughtBottle && (
-        <CaughtBottleModal color={caughtBottle} onClose={() => setCaughtBottle(null)} />
+        <BottleMessageModal color={caughtBottle} onClose={() => setCaughtBottle(null)} />
       )}
     </main>
   );

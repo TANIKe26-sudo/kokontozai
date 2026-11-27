@@ -2,7 +2,7 @@ import { useState } from 'react';
 import ImageButton from './ImageButton.jsx';
 import './IslandScene.css';
 
-export default function IslandScene({ onBridgeClick, onDecoBoxClick, onWorkspaceClick }) {
+export default function IslandScene({ onBridgeClick, onDecoBoxClick, onWorkspaceClick, onBottleClick }) {
   const [bottleRotations] = useState(() =>
     Array.from({ length: 4 }, () => Math.random() * 360),
   );
@@ -35,24 +35,28 @@ export default function IslandScene({ onBridgeClick, onDecoBoxClick, onWorkspace
           src="/images/bottlePinkMsg.png"
           label="Pink message bottle"
           rotation={bottleRotations[0]}
+          onActivate={() => onBottleClick('pink')}
         />
         <ImageButton
           className="island-bottle bottle-white"
           src="/images/bottleWhiteMsg.png"
           label="White message bottle"
           rotation={bottleRotations[1]}
+          onActivate={() => onBottleClick('white')}
         />
         <ImageButton
           className="island-bottle bottle-yellow"
           src="/images/bottleYellowMsg.png"
           label="Yellow message bottle"
           rotation={bottleRotations[2]}
+          onActivate={() => onBottleClick('yellow')}
         />
         <ImageButton
           className="island-bottle bottle-blue"
           src="/images/bottleBlueMsg.png"
           label="Blue message bottle"
           rotation={bottleRotations[3]}
+          onActivate={() => onBottleClick('blue')}
         />
         <svg className="selection-marker marker-deco-box" viewBox="0 0 64 64" aria-hidden="true">
           <path d="M5 5 H59 L32 59 Z" />
