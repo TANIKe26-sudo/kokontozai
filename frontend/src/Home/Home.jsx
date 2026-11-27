@@ -7,6 +7,7 @@ import WorkspaceScene from '../Workspace/WorkspaceScene.jsx';
 import TutorialModal from './TutorialModal.jsx';
 import DecorationInventoryModal from './DecorationInventoryModal.jsx';
 import BottleMessageModal from '../components/BottleMessageModal.jsx';
+import DecorationGetModal from '../components/DecorationGetModal.jsx';
 
 export default function Home() {
   const [tutorialOpen, setTutorialOpen] = useState(false);
@@ -14,6 +15,21 @@ export default function Home() {
   const [pierOpen, setPierOpen] = useState(false);
   const [workspaceOpen, setWorkspaceOpen] = useState(false);
   const [openBottleColor, setOpenBottleColor] = useState(null);
+  const [pendingBottleColor, setPendingBottleColor] = useState(null);
+  const [decorationGetOpen, setDecorationGetOpen] = useState(false);
+
+  function handleIslandBottleClick(color) {
+    setPendingBottleColor(color);
+    setDecorationGetOpen(true);
+  }
+
+  function handleDecorationGetClose() {
+    setDecorationGetOpen(false);
+    if (pendingBottleColor) {
+      setOpenBottleColor(pendingBottleColor);
+      setPendingBottleColor(null);
+    }
+  }
 
   if (pierOpen) {
     return <PierScene onBack={() => setPierOpen(false)} />;
@@ -29,7 +45,7 @@ export default function Home() {
         onBridgeClick={() => setPierOpen(true)}
         onDecoBoxClick={() => setDecorationOpen(true)}
         onWorkspaceClick={() => setWorkspaceOpen(true)}
-        onBottleClick={setOpenBottleColor}
+        onBottleClick={handleIslandBottleClick}
       />
       <button
         className="help-button"
@@ -45,7 +61,16 @@ export default function Home() {
         <DecorationInventoryModal onClose={() => setDecorationOpen(false)} />
       )}
       {openBottleColor && (
-        <BottleMessageModal color={openBottleColor} onClose={() => setOpenBottleColor(null)} />
+        <BottleMessageModal
+          color={openBottleColor}
+          onClose={() => setOpenBottleColor(null)}
+        />
+      )}
+      {decorationGetOpen && (
+        <DecorationGetModal
+          decorationName="ハート"
+          onClose={handleDecorationGetClose}
+        />
       )}
     </main>
   );
