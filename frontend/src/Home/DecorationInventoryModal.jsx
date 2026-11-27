@@ -1,21 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import ReactionIcon from '../components/svg/reactions/ReactionIcon.jsx';
+import { INVENTORY_REACTIONS } from '../data/reactions.js';
 import './DecorationInventoryModal.css';
-
-const DECORATIONS = [
-  { name: 'ハート', image: 'heart.png' },
-  { name: 'ハグ', image: 'hug.png' },
-  { name: 'ハート(手)', image: 'heartHands.png' },
-  { name: '握手', image: 'handShake.png' },
-  { name: '祈り', image: 'pray.png' },
-  { name: '頭爆発', image: 'ExplodingHead.png' },
-  { name: 'ぴえん', image: 'PienFace.png' },
-  { name: '溶ける顔', image: 'MeltingFace.png' },
-  { name: '涙', image: 'cry.png' },
-  { name: '号泣', image: 'sob.png' },
-  { name: 'しょんぼり', image: 'pensive.png' },
-  { name: '目', image: 'eyes.png' },
-  { name: '叫び', image: 'scream.png' },
-];
 
 function getColumnCount() {
   if (window.matchMedia('(max-width: 560px)').matches) return 3;
@@ -33,8 +19,8 @@ export default function DecorationInventoryModal({ onClose }) {
   const [columnCount, setColumnCount] = useState(getColumnCount);
   const [page, setPage] = useState(0);
   const pageSize = columnCount * 3;
-  const pageCount = Math.ceil(DECORATIONS.length / pageSize);
-  const visibleDecorations = DECORATIONS.slice(page * pageSize, (page + 1) * pageSize);
+  const pageCount = Math.ceil(INVENTORY_REACTIONS.length / pageSize);
+  const visibleDecorations = INVENTORY_REACTIONS.slice(page * pageSize, (page + 1) * pageSize);
 
   const closeWithAnimation = useCallback(() => {
     if (closingRef.current) return;
@@ -106,9 +92,9 @@ export default function DecorationInventoryModal({ onClose }) {
           style={{ '--decoration-columns': columnCount }}
         >
           {visibleDecorations.map((decoration) => (
-            <li className="decoration-card" key={decoration.image}>
+            <li className="decoration-card" key={decoration.id}>
               <span className="decoration-art">
-                <img src={`/images/${decoration.image}`} alt="" loading="lazy" />
+                <ReactionIcon reactionId={decoration.id} />
               </span>
               <span className="decoration-name">{decoration.name}</span>
             </li>

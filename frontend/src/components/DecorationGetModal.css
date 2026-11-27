@@ -51,8 +51,7 @@
   filter:
     drop-shadow(0 0 18px rgb(255 255 150 / 96%))
     drop-shadow(0 0 44px rgb(255 255 155 / 86%))
-    drop-shadow(0 0 82px rgb(255 255 172 / 66%))
-    drop-shadow(0 5px 2px rgb(67 70 59 / 28%));
+    drop-shadow(0 0 82px rgb(255 255 172 / 66%));
   user-select: none;
   animation: decoration-get-heart-pop 420ms cubic-bezier(0.2, 0.8, 0.25, 1) both;
 }

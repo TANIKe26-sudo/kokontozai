@@ -1,0 +1,21 @@
+.workspace-table {
+  --workspace-table-color: #f0c89a;
+  --workspace-table-seam-color: #e4a965;
+  --workspace-table-plank-height: clamp(96px, 20vh, 180px);
+  --workspace-table-seam-width: clamp(2px, 0.25vh, 3px);
+
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background-color: var(--workspace-table-color);
+  background-image: linear-gradient(
+    to bottom,
+    transparent calc(100% - var(--workspace-table-seam-width)),
+    var(--workspace-table-seam-color) 0
+  );
+  background-size: 100% var(--workspace-table-plank-height);
+  background-position: 0 calc(var(--workspace-table-plank-height) * 0.25);
+  background-repeat: repeat-y;
+  pointer-events: none;
+  user-select: none;
+}

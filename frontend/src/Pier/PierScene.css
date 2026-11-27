@@ -46,18 +46,9 @@
   transform: translate(-50%, -50%) rotate(var(--rotation, 0deg));
 }
 
-.pier-bottle img {
+.pier-bottle svg {
   position: relative;
   z-index: 1;
-}
-
-.pier-bottle[aria-pressed="true"]::before {
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  background: url('/images/bottleOutline.png') center / 100% 100% no-repeat;
-  content: '';
-  pointer-events: none;
 }
 
 .pier-bottle:focus-visible {
